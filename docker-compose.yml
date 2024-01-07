@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  waste_management:
+    build: .
+    command: uvicorn main:app --host 0.0.0.0
+    volumes:
+      - .:/waste_management
+    ports:
+      - "8008:8000"
+    depends_on:
+      - mongodb
+      - postgres
+  postgres:
+    image: postgres
+    expose:
+      - "5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '1234'
+      POSTGRES_DB: 'otol'
+
+volumes:
+  db:
