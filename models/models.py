@@ -8,7 +8,7 @@ class Driver(Base):
     __tablename__ = "vehicle"
     id = Column(Integer, primary_key=True, index=True)
     driver_name = Column(String)
-    # connection_status = Column(Boolean)
+    driver_id=Column(Integer)
     phone_number = Column(Integer)
     overall_traveled_km = Column(String)
     # car_model = Column(String)

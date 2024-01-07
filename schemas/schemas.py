@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class Driverschema(BaseModel):
     driver_name: str
+    driver_id: int
     # connection_status: bool | None = None
     phone_number: int
     overall_traveled_km: int | None = None

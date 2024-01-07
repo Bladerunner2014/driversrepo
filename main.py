@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 @app.post("/driver/", response_model=schemas.Driverschema)
 def create_car(driver: schemas.Driverschema):
     db = SessionLocal()
-    db_user = driver_dao.get_driver_by_id(db, driver.phone_number)
+    db_user = driver_dao.get_driver_by_id(db, driver.driver_id)
     if db_user:
         raise HTTPException(status_code=400, detail="driver already registered")
     res = driver_dao.create_driver(db=db, driver=driver)
@@ -48,22 +48,22 @@ def read_cars(skip: int = 0, limit: int = 100):
     return drivers
 
 
-@app.get("/driver/{phone}", response_model=schemas.Driverschema)
-def read_car(phone):
+@app.get("/driver/{driver_id}", response_model=schemas.Driverschema)
+def read_car(driver_id):
     db = SessionLocal()
-    plate = driver_dao.get_driver_by_id(db, phone=phone)
+    plate = driver_dao.get_driver_by_id(db, driver_id=driver_id)
     if plate is None:
         raise HTTPException(status_code=404, detail="driver not found")
     return plate
 
 
-@app.delete("/drivers/{phone}", response_model=schemas.Driverschema)
-def delete_car(phone: int):
+@app.delete("/drivers/{driver_id}", response_model=schemas.Driverschema)
+def delete_car(driver_id: int):
     db = SessionLocal()
-    db_user = driver_dao.get_driver_by_id(db, phone)
+    db_user = driver_dao.get_driver_by_id(db, driver_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="driver not found")
-    plate = driver_dao.delete_driver(db, phone=phone)
+    plate = driver_dao.delete_driver(db, driver_id=driver_id)
     return ORJSONResponse(status_code=status.HTTP_200_OK, content={"message": "driver deleted successfully"})
 
 
