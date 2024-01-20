@@ -11,9 +11,8 @@ class Driverschema(BaseModel):
     disabled: bool | None = None
     # plate_number: str
     created_at: str | None = None
-    last_active_at: str | None = None
+    last_trip: str | None = None
+    assigned_car: str | None = None
 
     class Config:
         orm_mode = True
-
-
