@@ -39,6 +39,25 @@ def create_driver(driver: schemas.Driverschema):
     return res
 
 
+@app.patch("/driver/", response_model=schemas.Driverschema)
+def update_car(driver: schemas.Driverschema):
+    db = SessionLocal()
+    try:
+        existing_driver = db.query(models.Driver).filter(models.Driver.driver_id == driver.driver_id).first()
+        if existing_driver:
+            # Update existing car
+            for key, value in driver.dict().items():
+                setattr(existing_driver, key, value)
+        # else:
+        #     # Create new car
+        #     db.add(models.Auto(**car.dict()))
+        db.commit()
+        db.refresh(existing_driver)
+    finally:
+        db.close()
+    return existing_driver
+
+
 @app.get("/driver/")
 def read_drivers(skip: int = 0, limit: int = 100):
     db = SessionLocal()
@@ -69,7 +88,6 @@ def delete_driver(driver_id: int):
 
 @app.post("/assign/")
 def assign_driver(car_plate: str, driver_id: int):
-
     db = SessionLocal()
     driver = driver_dao.get_driver_by_id(db, driver_id=driver_id)
     if driver is None:

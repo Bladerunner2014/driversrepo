@@ -1,15 +1,13 @@
 version: '3'
 
 services:
-  waste_management:
+  driver:
     build: .
-    command: uvicorn main:app --host 0.0.0.0
+    command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
     volumes:
-      - .:/waste_management
+      - .:/driver
     ports:
-      - "8008:8000"
-    depends_on:
-      - mongodb
+      - "8001:8000"
       - postgres
   postgres:
     image: postgres
