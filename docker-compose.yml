@@ -8,7 +8,6 @@ services:
       - .:/driver
     ports:
       - "8001:8000"
-      - postgres
   postgres:
     image: postgres
     expose:
